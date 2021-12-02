@@ -1,28 +1,26 @@
-import { UserData } from '../../hooks/authenticationUser/useUserData'
+import useUserData from '../../hooks/authenticationUser/useUserData'
 
 import {
   Container,
-  PerfilImage,
-  PerfilImageBorder,
-  PerfilInfo,
-  PerfilName,
   ButtonGroup,
-  ButtonItem
+  ButtonItem,
+  ButtonTitle
 } from './styles'
 
 import HomeIcon from '@mui/icons-material/Home'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SearchIcon from '@mui/icons-material/Search'
+import PersonIcon from '@mui/icons-material/Person'
+
 import { useRouter } from 'next/router'
 import usePage from '../../hooks/pages/usePage'
 
-type Props = {
-  userData?: UserData
-}
-
-const MenuAsideLeft = ({ userData }: Props) => {
+const MenuAsideLeft = () => {
   const router = useRouter()
   const page = usePage()
+  const userData = useUserData()
+
+  const userAuth = userData.handleGetUserData()
 
   const handleHomeButton = () => {
     router.push(page.getUrlFeedPage())
@@ -32,20 +30,29 @@ const MenuAsideLeft = ({ userData }: Props) => {
     router.push(page.getUrlSearchUser())
   }
 
+  const handleProfileButton = () => {
+    router.push(page.getUrlUserProfile(userAuth?.user.username as string))
+  }
+
   return (
     <Container>
-      <PerfilInfo>
-        <PerfilImageBorder>
-          <PerfilImage src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlkQGN0yiPfcvIZHuy7-dsdR38rIHqARPyUA&usqp=CAU' />
-        </PerfilImageBorder>
-        {userData && userData.user && (
-          <PerfilName>{userData.user.username}</PerfilName>
-        )}
-      </PerfilInfo>
       <ButtonGroup>
-        <ButtonItem onClick={handleHomeButton}><HomeIcon />Feed</ButtonItem>
-        <ButtonItem><SettingsIcon />Configurações</ButtonItem>
-        <ButtonItem onClick={handleSearchButton}><SearchIcon />Buscar usuários</ButtonItem>
+        <ButtonItem onClick={handleHomeButton}>
+          <HomeIcon />
+          <ButtonTitle>Feed</ButtonTitle>
+        </ButtonItem>
+        <ButtonItem>
+          <PersonIcon />
+          <ButtonTitle onClick={handleProfileButton}>Perfil</ButtonTitle>
+        </ButtonItem>
+        <ButtonItem onClick={handleSearchButton}>
+          <SearchIcon />
+          <ButtonTitle>Buscar usuários</ButtonTitle>
+        </ButtonItem>
+        <ButtonItem>
+          <SettingsIcon />
+          <ButtonTitle>Configurações</ButtonTitle>
+        </ButtonItem>
       </ButtonGroup>
     </Container>
   )

@@ -14,37 +14,6 @@ export const Container = styled(Paper)(({ theme }) => ({
   left: 0
 }))
 
-export const PerfilInfo = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center'
-}))
-
-export const PerfilImageBorder = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: 4,
-  borderRadius: '50%',
-  border: '0.5px dashed #FFF9'
-}))
-
-export const PerfilImage = styled('img')(({ theme }) => ({
-  borderRadius: '50%',
-  width: 100,
-  height: 100
-}))
-
-export const PerfilName = styled(Button)(({ theme }) => ({
-  fontWeight: 'bold',
-  fontSize: '15px',
-  cursor: 'pointer',
-  padding: '10px 20px',
-  margin: '10px 20px',
-  color: theme.palette.primary.contrastText
-}))
-
 export const ButtonGroup = styled(Stack)(({ theme }) => ({
 }))
 
@@ -52,5 +21,14 @@ export const ButtonItem = styled(Button)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-start',
   margin: '20px 10px 0 10px',
-  padding: '15px 20px'
+  padding: '10px 15px',
+
+  '& svg': {
+    color: 'white',
+    margin: '0px 10px'
+  }
+}))
+
+export const ButtonTitle = styled('span')(({ theme }) => ({
+  color: 'white'
 }))

@@ -1,13 +1,13 @@
 import Head from 'next/head'
-import FeedPage from '../src/feed/page'
+import FeedPage from '../src/Feed/page'
 
 const Page = () => {
   return (
     <>
-    <Head>
-      <title>Feed</title>
-    </Head>
-    <FeedPage />
+      <Head>
+        <title>Feed</title>
+      </Head>
+      <FeedPage />
     </>
   )
 }

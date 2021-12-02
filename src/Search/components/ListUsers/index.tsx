@@ -1,6 +1,9 @@
-import { User } from '../hooks/useSearchUsers'
-
+import { useRouter } from 'next/router'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+
+import usePage from '../../../shared/hooks/pages/usePage'
+
+import { User } from '../../hooks/useSearchUsers'
 
 import {
   ResultSearch,
@@ -9,7 +12,8 @@ import {
   UserImage,
   Right,
   Username,
-  Bio
+  Bio,
+  MessageList
 } from './styles'
 
 type Props = {
@@ -18,19 +22,26 @@ type Props = {
 }
 
 const ListUsers = (props: Props) => {
+  const router = useRouter()
+  const page = usePage()
+
   if (props.isLoading) {
     return <span>Aguarde...</span>
   }
 
   if (props.users.length === 0) {
-    return <span>nenhum usuário encontrado</span>
+    return <MessageList>nenhum usuário encontrado</MessageList>
+  }
+
+  const handleOnClickUserFound = (user: User) => {
+    router.push(page.getUrlUserProfile(user.username))
   }
 
   return (
     <ResultSearch>
       {
         props.users.map(user => (
-            <UserFound key={user.id}>
+            <UserFound key={user.id} onClick={() => handleOnClickUserFound(user)}>
               <Left>
                 {
                   user.image

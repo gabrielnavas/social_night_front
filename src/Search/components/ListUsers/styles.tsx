@@ -1,25 +1,5 @@
-import { Paper, Stack, Button, Box, TextField } from '@mui/material'
+import { Paper, Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
-
-export const Page = styled('div')(({ theme }) => ({
-  display: 'flex',
-  paddingLeft: 200,
-  minHeight: '100vh',
-  widthMax: '100vw',
-  backgroundColor: theme.palette.primary.dark
-}))
-
-export const Container = styled(Stack)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  background: 'red',
-  height: '100%',
-  width: '40%',
-  marginLeft: 100,
-  marginTop: 100,
-  padding: '20px 0'
-}))
 
 export const ResultSearch = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -71,14 +51,6 @@ export const Bio = styled('span')(({ theme }) => ({
   padding: '20px'
 }))
 
-export const SearchStack = styled(Stack)(({ theme }) => ({
-}))
-
-export const SearchInput = styled(TextField)(({ theme }) => ({
-  minWidth: '300px'
-}))
-
-export const SearchButton = styled(Button)(({ theme }) => ({
-  height: 50,
-  width: 70
+export const MessageList = styled('span')(({ theme }) => ({
+  padding: '50px 0'
 }))

@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import LoginPage from '../src/login/page'
+import LoginPage from '../src/Login/page'
 
 const Page = () => {
   return (

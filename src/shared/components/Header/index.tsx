@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
+import { AppBar, Toolbar, Button } from '@mui/material'
+import ExitIcon from '@mui/icons-material/ExitToApp'
+import StarIcon from '@mui/icons-material/Star'
 
 import { toast } from 'react-toastify'
 
@@ -12,7 +11,10 @@ import useUserData from '../../hooks/authenticationUser/useUserData'
 import usePage from '../../hooks/pages/usePage'
 
 import {
-  Container
+  Container,
+  ExitText,
+  SocialNightText,
+  SocialNightTitle
 } from './styles'
 
 const Header = () => {
@@ -39,10 +41,18 @@ const Header = () => {
     <Container>
       <AppBar position="static">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }} >
-          <Typography variant="h6" component="div">
-            Social Night
-          </Typography>
-          <Button onClick={handleButtonLogout} color="inherit">Sair</Button>
+          <SocialNightTitle variant="h6" component="div">
+            <StarIcon />
+            <SocialNightText>
+              Social Night
+            </SocialNightText>
+          </SocialNightTitle>
+          <Button onClick={handleButtonLogout} color="inherit">
+            <ExitIcon />
+            <ExitText>
+              Sair
+            </ExitText>
+          </Button>
         </Toolbar>
       </AppBar>
     </Container>

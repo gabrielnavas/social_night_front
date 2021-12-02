@@ -3,7 +3,8 @@ const usePage = () => {
     getUrlLoginPage: () => 'login',
     getUrlRegisterPage: () => 'register',
     getUrlFeedPage: () => 'feed',
-    getUrlSearchUser: () => '/search'
+    getUrlSearchUser: () => '/search',
+    getUrlUserProfile: (username: string) => `/profile?username=${username}`
   }
 }
 

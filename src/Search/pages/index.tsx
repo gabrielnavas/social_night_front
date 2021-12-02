@@ -11,8 +11,8 @@ import {
 } from './styles'
 
 import { useSearchUsers } from '../hooks/useSearchUsers'
-import ListUsers from './listUsers'
-import SearchInputField from './searchInputField'
+import ListUsers from '../components/ListUsers'
+import SearchInputField from '../components/SearchInputField'
 import MenuAsideLeft from '../../shared/components/MenuAsideLeft'
 
 const SearchPage = () => {
@@ -34,7 +34,6 @@ const SearchPage = () => {
 
   return (
     <Page>
-      {/* <Header /> */}
       <MenuAsideLeft />
       <Container>
         <SearchInputField isLoading={isLoading} onSubmit={handleSubmit} />

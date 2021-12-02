@@ -5,7 +5,9 @@ const useApi = () => {
     getUrlRegister: () => `${apiUrl}/users`,
     getUrlAuthentication: () => `${apiUrl}/login`,
     getUrlGetFriends: (requesterUserId: number) => `${apiUrl}/friends/${requesterUserId}`,
-    getUrlGetAllUsers: (query: string) => `${apiUrl}/users?username=${query}`
+    getUrlGetAllUsers: (query: string) => `${apiUrl}/users?username=${query}`,
+    getUrlGetUserByUsername: (username: string) => `${apiUrl}/users/username/${username}`,
+    getUrlIsFriend: (requesterUserId: number, targetUserId: number) => `${apiUrl}/friends/is_friend/${requesterUserId}/${targetUserId}`
   }
 }
 
