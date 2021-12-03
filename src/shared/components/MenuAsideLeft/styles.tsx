@@ -5,7 +5,7 @@ export const Container = styled(Paper)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  padding: '30px 20px',
+  padding: '30px 10px',
   marginLeft: 10,
   marginTop: 30,
   marginRight: 10,
@@ -21,7 +21,7 @@ export const ButtonItem = styled(Button)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-start',
   margin: '20px 10px 0 10px',
-  padding: '10px 15px',
+  padding: '10px',
 
   '& svg': {
     color: 'white',
@@ -30,5 +30,6 @@ export const ButtonItem = styled(Button)(({ theme }) => ({
 }))
 
 export const ButtonTitle = styled('span')(({ theme }) => ({
+  textAlign: 'left',
   color: 'white'
 }))

@@ -1,12 +1,12 @@
-import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 
 import Header from '../../shared/components/Header'
 import MenuAsideLeft from '../../shared/components/MenuAsideLeft'
-import useUserData from '../../shared/hooks/authenticationUser/useUserData'
-import usePage from '../../shared/hooks/pages/usePage'
+import useUserData, { UserData } from '../../shared/hooks/authenticationUser/useUserData'
+import { useRequestCancelRequestFriend } from '../hooks/useRequestCancelRequestFriend'
 
-import { useRequestIsFriend } from '../hooks/useRequestIsFriend'
+import { Status, useRequestFriendStatus } from '../hooks/useRequestFriendStatus'
+import { useRequestRemoveFriendship } from '../hooks/useRequestRemoveFriendship'
 import { useRequestSendRequestFriend } from '../hooks/useRequestSendRequestFriend'
 import { User, useRequestUser } from '../hooks/useRequestUser'
 
@@ -28,14 +28,12 @@ type Props = {
 }
 
 const ProfilePage = (props: Props) => {
-  const userData = useUserData()
-  const myUserAuth = userData.handleGetUserData()
-  const router = useRouter()
-  const page = usePage()
-
+  const [myUserAuth, setMyUserAuth] = useState<UserData | null>(null)
   const [userProfile, setUserProfile] = useState<User>()
-  const [isFriend, setIsFriend] = useState(false)
+  const [friendStatus, setFriendStatus] = useState<Status>('Unknow')
   const [userProfileIsIam, setUserProfileIsIam] = useState(false)
+
+  const userData = useUserData()
 
   const {
     isLoading: isLoadingRequestUser,
@@ -44,76 +42,106 @@ const ProfilePage = (props: Props) => {
 
   const {
     isLoading: isLoadingRequestIsFriend,
-    handleRequestIsMyFriend
-  } = useRequestIsFriend()
+    handleRequestFriendStatus
+  } = useRequestFriendStatus()
 
   const {
-    handlSendRequestFriend,
-    isLoading: isLoadingRequestSendRequestFriend
+    isLoading: isLoadingRequestSendRequestFriend,
+    handlSendRequestFriend
   } = useRequestSendRequestFriend()
 
-  const isLoading = isLoadingRequestUser || isLoadingRequestIsFriend || isLoadingRequestSendRequestFriend
+  const {
+    isLoading: isLoadingRequestCancelRequestFriend,
+    handleRequestCancelRequestFriend
+  } = useRequestCancelRequestFriend()
+
+  const {
+    isLoading: isLoadingRequestRemoveFriendship,
+    handleRequestRemoveFriendship
+  } = useRequestRemoveFriendship()
+
+  const isLoading = isLoadingRequestUser || isLoadingRequestIsFriend || isLoadingRequestSendRequestFriend || isLoadingRequestCancelRequestFriend || isLoadingRequestRemoveFriendship
 
   useEffect(() => {
     /**
      * Pega o profile que vem do username do props.
      * Verifica se o profile é a pessoa logada.
-     * Se der errado redireciona para o feed.
+     * Verifica se ele já é amigo da pessoa logada.
      */
+
     (async () => {
-      const userProfile = await handleRequestUser(myUserAuth?.token as string, props.username)
-      if (userProfile) {
-        if (myUserAuth?.user.id === userProfile?.id) {
-          setUserProfileIsIam(true)
-        }
-        setUserProfile(userProfile)
-      } else {
-        router.replace(page.getUrlFeedPage())
+      const userAuth = userData.handleGetUserData()
+      if (!userAuth) {
+        return
       }
+      setMyUserAuth(userAuth)
+
+      if (!props.username) {
+        return
+      }
+      const userProfile = await handleRequestUser(userAuth.token as string, props.username)
+      if (!userProfile) {
+        return
+      }
+      if (myUserAuth?.user.id === userProfile?.id) {
+        setUserProfileIsIam(true)
+      }
+      setUserProfile(userProfile)
+
+      const statusFriend = await handleRequestFriendStatus(
+        userAuth.token as string,
+        userAuth.user.id as number,
+        userProfile.id as number)
+      setFriendStatus(statusFriend)
     })()
   }, [props.username])
 
-  useEffect(() => {
-    /**
-     * Verifica se o dono do profile ja foi carregado e o usuário do usuário existe.
-     * Verifica se ele já é amigo da pessoa logada.
-     */
-    (async () => {
-      if (userProfile && myUserAuth) {
-        const isFriend = await handleRequestIsMyFriend(
-          myUserAuth.token as string,
-          myUserAuth.user.id as number,
-          userProfile.id as number)
-        setIsFriend(isFriend)
-      }
-    })()
-  }, [])
-
   const handlerSendRequestFriend = useCallback(() => {
     (async () => {
-      if (myUserAuth && userProfile) {
-        await handlSendRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
+      if (!myUserAuth || !userProfile) {
+        return
       }
+      await handlSendRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
+      setFriendStatus('Waiting')
     })()
-  }, [])
+  }, [handlSendRequestFriend])
+
+  const handlerCancelRequestFriend = useCallback(() => {
+    (async () => {
+      if (!myUserAuth || !userProfile) {
+        return
+      }
+      await handleRequestCancelRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
+      setFriendStatus('Unknow')
+    })()
+  }, [handleRequestCancelRequestFriend])
+
+  const handlerRemoveFriendship = useCallback(() => {
+    (async () => {
+      if (!myUserAuth || !userProfile) {
+        return
+      }
+      await handleRequestRemoveFriendship(myUserAuth.token, myUserAuth.user.id, userProfile.id)
+      setFriendStatus('Unknow')
+    })()
+  }, [handleRequestCancelRequestFriend])
 
   const renderButtonHeader = () => {
     /**
      * Varia o botão que aparece dependendo de quem é o perfil
      */
     if (userProfileIsIam) {
-      return <ButtonHeader>Editar profile</ButtonHeader>
+      return <ButtonHeader disabled={isLoading}>Editar profile</ButtonHeader>
     }
-    if (isFriend) {
-      return <ButtonHeader>Cancelar amizade</ButtonHeader>
-    } else {
-      return <ButtonHeader onClick={handlerSendRequestFriend}>Solicitar amizade</ButtonHeader>
+    if (friendStatus === 'Unknow') {
+      return <ButtonHeader disabled={isLoading} onClick={handlerSendRequestFriend}>Solicitar amizade</ButtonHeader>
     }
-  }
-
-  // Todo: melhor isso
-  if (isLoading) {
-    <div>Loading</div>
+    if (friendStatus === 'Waiting') {
+      return <ButtonHeader disabled={isLoading} onClick={handlerCancelRequestFriend}>Cancelar solicitação</ButtonHeader>
+    }
+    if (friendStatus === 'Friend') {
+      return <ButtonHeader disabled={isLoading} onClick={handlerRemoveFriendship}>Cancelar amizade</ButtonHeader>
+    }
   }
 
   return (

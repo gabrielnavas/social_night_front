@@ -9,7 +9,6 @@ const useRequestSendRequestFriend = () => {
   const handlSendRequestFriend = async (token: string, requesterUserId: number, targetUserId: number): Promise<void> => {
     setIsLoading(true)
     console.log(token, requesterUserId, targetUserId)
-
     const response = await fetch(api.getUrlSendRequestFriend(), {
       method: 'POST',
       headers: {

@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import useApi from '../../shared/hooks/api/useApi'
 
-const useRequestIsFriend = () => {
+export type Status = 'Unknow'| 'Waiting' | 'Friend'
+
+const useRequestFriendStatus = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const api = useApi()
 
-  const handleRequestIsMyFriend = async (token: string, myUserId: number, userPossibleFriendId: number): Promise<boolean> => {
+  const handleRequestFriendStatus = async (token: string, myUserId: number, userPossibleFriendId: number): Promise<Status> => {
     setIsLoading(true)
-    const response = await fetch(api.getUrlIsFriend(myUserId, userPossibleFriendId), {
+    const response = await fetch(api.getUrlFriendStatus(myUserId, userPossibleFriendId), {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -18,15 +20,16 @@ const useRequestIsFriend = () => {
     setIsLoading(false)
     if (response.status === 200) {
       const json = await response.json()
-      return json.isFriend
+      const status = json.status as Status
+      return status
     }
-    throw new Error('server error')
+    return 'Unknow'
   }
 
   return {
     isLoading,
-    handleRequestIsMyFriend
+    handleRequestFriendStatus
   }
 }
 
-export { useRequestIsFriend }
+export { useRequestFriendStatus }
