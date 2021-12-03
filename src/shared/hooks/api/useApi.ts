@@ -7,7 +7,8 @@ const useApi = () => {
     getUrlGetFriends: (requesterUserId: number) => `${apiUrl}/friends/${requesterUserId}`,
     getUrlGetAllUsers: (query: string) => `${apiUrl}/users?username=${query}`,
     getUrlGetUserByUsername: (username: string) => `${apiUrl}/users/username/${username}`,
-    getUrlIsFriend: (requesterUserId: number, targetUserId: number) => `${apiUrl}/friends/is_friend/${requesterUserId}/${targetUserId}`
+    getUrlIsFriend: (requesterUserId: number, targetUserId: number) => `${apiUrl}/friends/is_friend/${requesterUserId}/${targetUserId}`,
+    getUrlSendRequestFriend: () => `${apiUrl}/friends/send_request`
   }
 }
 

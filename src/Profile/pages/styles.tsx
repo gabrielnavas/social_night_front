@@ -10,14 +10,14 @@ export const Page = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark
 }))
 
-export const Container = styled('div')(({ theme }) => ({
+export const Container = styled('div')(() => ({
   display: 'flex',
   height: '100%',
   width: '90%',
   marginTop: 40
 }))
 
-export const Profile = styled(Paper)(({ theme }) => ({
+export const Profile = styled(Paper)(() => ({
   display: 'flex',
   flexDirection: 'column',
   marginLeft: 100,
@@ -27,14 +27,14 @@ export const Profile = styled(Paper)(({ theme }) => ({
   marginTop: 50
 }))
 
-export const PerfilInfo = styled('div')(({ theme }) => ({
+export const PerfilInfo = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   paddingTop: 60
 }))
 
-export const PerfilImageBorder = styled('div')(({ theme }) => ({
+export const PerfilImageBorder = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -43,7 +43,7 @@ export const PerfilImageBorder = styled('div')(({ theme }) => ({
   border: '0.5px dashed #FFF9'
 }))
 
-export const PerfilImage = styled('img')(({ theme }) => ({
+export const PerfilImage = styled('img')(() => ({
   borderRadius: '50%',
   width: 100,
   height: 100

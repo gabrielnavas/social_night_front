@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Header from '../../shared/components/Header'
 import MenuAsideLeft from '../../shared/components/MenuAsideLeft'
@@ -7,6 +7,7 @@ import useUserData from '../../shared/hooks/authenticationUser/useUserData'
 import usePage from '../../shared/hooks/pages/usePage'
 
 import { useRequestIsFriend } from '../hooks/useRequestIsFriend'
+import { useRequestSendRequestFriend } from '../hooks/useRequestSendRequestFriend'
 import { User, useRequestUser } from '../hooks/useRequestUser'
 
 import {
@@ -46,9 +47,19 @@ const ProfilePage = (props: Props) => {
     handleRequestIsMyFriend
   } = useRequestIsFriend()
 
-  const isLoading = isLoadingRequestUser || isLoadingRequestIsFriend
+  const {
+    handlSendRequestFriend,
+    isLoading: isLoadingRequestSendRequestFriend
+  } = useRequestSendRequestFriend()
+
+  const isLoading = isLoadingRequestUser || isLoadingRequestIsFriend || isLoadingRequestSendRequestFriend
 
   useEffect(() => {
+    /**
+     * Pega o profile que vem do username do props.
+     * Verifica se o profile é a pessoa logada.
+     * Se der errado redireciona para o feed.
+     */
     (async () => {
       const userProfile = await handleRequestUser(myUserAuth?.token as string, props.username)
       if (userProfile) {
@@ -63,6 +74,10 @@ const ProfilePage = (props: Props) => {
   }, [props.username])
 
   useEffect(() => {
+    /**
+     * Verifica se o dono do profile ja foi carregado e o usuário do usuário existe.
+     * Verifica se ele já é amigo da pessoa logada.
+     */
     (async () => {
       if (userProfile && myUserAuth) {
         const isFriend = await handleRequestIsMyFriend(
@@ -74,17 +89,29 @@ const ProfilePage = (props: Props) => {
     })()
   }, [])
 
+  const handlerSendRequestFriend = useCallback(() => {
+    (async () => {
+      if (myUserAuth && userProfile) {
+        await handlSendRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
+      }
+    })()
+  }, [])
+
   const renderButtonHeader = () => {
+    /**
+     * Varia o botão que aparece dependendo de quem é o perfil
+     */
     if (userProfileIsIam) {
       return <ButtonHeader>Editar profile</ButtonHeader>
     }
     if (isFriend) {
       return <ButtonHeader>Cancelar amizade</ButtonHeader>
     } else {
-      return <ButtonHeader>Solicitar amizade</ButtonHeader>
+      return <ButtonHeader onClick={handlerSendRequestFriend}>Solicitar amizade</ButtonHeader>
     }
   }
 
+  // Todo: melhor isso
   if (isLoading) {
     <div>Loading</div>
   }
