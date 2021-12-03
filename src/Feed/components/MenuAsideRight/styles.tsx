@@ -1,14 +1,18 @@
-import { Paper, TextField } from '@mui/material'
+import { Button, Paper, TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 export const Container = styled(Paper)(({ theme }) => ({
+
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  padding: '30px 20px',
+  padding: '30px 10px',
   width: '430px',
+  marginLeft: 10,
+  marginTop: 30,
+  marginRight: 10,
   position: 'sticky',
-  top: 110,
+  top: 160,
   left: 0
 
 }))
@@ -24,11 +28,17 @@ export const ListUsersFounds = styled('div')(({ theme }) => ({
   maxHeight: '500px'
 }))
 
-export const UserItem = styled('div')(({ theme }) => ({
+export const UserItem = styled(Paper)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  padding: '5px'
+  padding: '5px',
+  cursor: 'pointer',
+  margin: '5px',
+
+  '&:hover': {
+    boxShadow: theme.shadows[4]
+  }
 }))
 
 export const UserImage = styled('img')(({ theme }) => ({
@@ -36,12 +46,14 @@ export const UserImage = styled('img')(({ theme }) => ({
   height: '90px'
 }))
 
-export const UserUserName = styled('span')(({ theme }) => ({
+export const UserName = styled('span')(({ theme }) => ({
   display: 'inline-block',
-  width: '88px',
   whiteSpace: 'nowrap',
   overflow: 'hidden !important',
-  textOverflow: 'ellipsis'
+  textOverflow: 'ellipsis',
+  textAlign: 'center',
+  paddingTop: 5,
+  width: '100%'
 }))
 
 export const TextFieldSearchUsers = styled(TextField)(({ theme }) => ({

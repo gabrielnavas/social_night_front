@@ -1,50 +1,20 @@
-import { useState, useCallback, useEffect } from 'react'
-import { toast } from 'react-toastify'
+import { useState, useCallback } from 'react'
 
-import useUserData from '../../shared/hooks/authenticationUser/useUserData'
 import useApi from '../../shared/hooks/api/useApi'
-import router from 'next/router'
-import usePage from '../../shared/hooks/pages/usePage'
 
-type Friend = {
+export type Friend = {
   userId: number
-  username: number
+  username: string
   createdAt: Date,
   image?: string
 }
 
 const useGetFriends = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [friends, setFriends] = useState([] as Friend[])
-
   const api = useApi()
-  const userData = useUserData()
-  const page = usePage()
 
-  useEffect(() => {
-    (async () => {
-      await handleGetFriends()
-    })()
-  }, [])
-
-  const handleGetFriends = async () => {
-    const user = userData.handleGetUserData()
-    if (!user) {
-      router.replace(page.getUrlLoginPage())
-      return
-    }
+  const handleRequestGetFriends = useCallback(async (token: string, userID: number): Promise<Friend[]> => {
     setIsLoading(true)
-    try {
-      const friends = await requestRegister(user.token, user.user.id)
-      setFriends(friends)
-    } catch (ex) {
-      console.log(ex)
-      toast('Servidor offline. Tente novamente mais tarde.')
-    }
-    setIsLoading(false)
-  }
-
-  const requestRegister = useCallback(async (token: string, userID: number): Promise<Friend[]> => {
     const response = await fetch(api.getUrlGetFriends(userID), {
       method: 'GET',
       headers: {
@@ -52,6 +22,7 @@ const useGetFriends = () => {
         Authorization: `Bearer ${token}`
       }
     })
+    setIsLoading(false)
     const status = response.status
     if (status === 200) {
       const friends = await response.json()
@@ -61,7 +32,7 @@ const useGetFriends = () => {
   }, [])
 
   return {
-    friends,
+    handleRequestGetFriends,
     isLoading
   }
 }

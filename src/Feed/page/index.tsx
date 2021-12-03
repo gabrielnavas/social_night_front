@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import MessageIcon from '@mui/icons-material/Message'
@@ -18,14 +19,11 @@ import {
 } from './styles'
 import Header from '../../shared/components/Header'
 
-import useUserData, { UserData } from '../../shared/hooks/authenticationUser/useUserData'
-
+import useUserData from '../../shared/hooks/authenticationUser/useUserData'
 import usePage from '../../shared/hooks/pages/usePage'
-import { useRouter } from 'next/router'
 import MenuAsideRight from '../components/MenuAsideRight'
 
 const FeedPage = () => {
-  const [userData, setUserData] = useState({} as UserData)
   const useData = useUserData()
 
   const page = usePage()
@@ -35,19 +33,17 @@ const FeedPage = () => {
     const userData = useData.handleGetUserData()
     if (!userData) {
       router.replace(page.getUrlLoginPage())
-      return
     }
-    setUserData(userData)
   }, [])
 
   return (
     <Page>
       <Header />
       <Container spacing={10} direction='row'>
-        <MenuAsideLeft userData={userData} />
+        <MenuAsideLeft />
         <Feed>
           {
-            Array(200).fill('').map((_, index) => (
+            Array(10).fill('').map((_, index) => (
               <Post key={index}>
                 <Image src='https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGFydHl8ZW58MHx8MHx8&w=1000&q=80' />
                 <PostComment>

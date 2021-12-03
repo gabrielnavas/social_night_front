@@ -13,7 +13,7 @@ export const UserFound = styled(Paper)(({ theme }) => ({
   cursor: 'pointer',
   backgroundColor: theme.palette.primary.dark,
   padding: '50px 20px',
-  minWidth: 800,
+  width: 500,
   minHeight: 200,
   marginTop: 30,
 

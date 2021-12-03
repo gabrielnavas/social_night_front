@@ -29,12 +29,12 @@ export const ResultSearch = styled('div')(({ theme }) => ({
 
 export const UserFound = styled(Paper)(({ theme }) => ({
   display: 'flex',
-  cursor: 'pointer',
-  backgroundColor: theme.palette.primary.dark,
-  padding: '50px 20px',
   minWidth: 800,
   minHeight: 200,
   marginTop: 30,
+  padding: '50px 20px',
+  backgroundColor: theme.palette.primary.dark,
+  cursor: 'pointer',
 
   '&:hover': {
     backgroundColor: '#2222'
