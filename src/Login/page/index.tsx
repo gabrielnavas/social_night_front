@@ -59,6 +59,7 @@ const LoginPage = () => {
                 label="Nome de usuário"
                 variant="standard"
                 disabled={isLoading}
+                onKeyPress={e => e.key === 'Enter' && handleButtonDontHaveAccount()}
               />
               <PasswordInput
                 required
@@ -71,6 +72,7 @@ const LoginPage = () => {
                 label="Senha"
                 variant="standard"
                 disabled={isLoading}
+                onKeyPress={e => e.key === 'Enter' && handleButtonDontHaveAccount()}
               />
             </StackInputs>
             <StackButtons spacing={2}>

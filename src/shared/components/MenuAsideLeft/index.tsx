@@ -11,6 +11,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SearchIcon from '@mui/icons-material/Search'
 import PersonIcon from '@mui/icons-material/Person'
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 
 import { useRouter } from 'next/router'
 import usePage from '../../hooks/pages/usePage'
@@ -22,30 +23,38 @@ const MenuAsideLeft = () => {
 
   const userAuth = userData.handleGetUserData()
 
-  const handleHomeButton = () => {
+  const handleOnClickHomeButton = () => {
     router.push(page.getUrlFeedPage())
   }
 
-  const handleSearchButton = () => {
+  const handleOnClickSearchButton = () => {
     router.push(page.getUrlSearchUser())
   }
 
-  const handleProfileButton = () => {
+  const handleOnClickProfileButton = () => {
     router.push(page.getUrlUserProfile(userAuth?.user.username as string))
+  }
+
+  const handleOnClickRequestsFromFriend = () => {
+    router.push(page.getUrlRequestsFromFriend())
   }
 
   return (
     <Container>
       <ButtonGroup>
-        <ButtonItem onClick={handleHomeButton}>
+        <ButtonItem onClick={handleOnClickHomeButton}>
           <HomeIcon />
           <ButtonTitle>Feed</ButtonTitle>
         </ButtonItem>
-        <ButtonItem>
+        <ButtonItem onClick={handleOnClickProfileButton}>
           <PersonIcon />
-          <ButtonTitle onClick={handleProfileButton}>Perfil</ButtonTitle>
+          <ButtonTitle>Perfil</ButtonTitle>
         </ButtonItem>
-        <ButtonItem onClick={handleSearchButton}>
+        <ButtonItem onClick={handleOnClickRequestsFromFriend}>
+          <SupervisedUserCircleIcon />
+          <ButtonTitle>Solicitações</ButtonTitle>
+        </ButtonItem>
+        <ButtonItem onClick={handleOnClickSearchButton}>
           <SearchIcon />
           <ButtonTitle>Buscar usuários</ButtonTitle>
         </ButtonItem>

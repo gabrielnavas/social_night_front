@@ -6,10 +6,10 @@ import {
   Paper as PaperMUI
 } from '@mui/material'
 
-export const Page = styled('div')(({ theme }) => ({
+export const Page = styled('div')(() => ({
 }))
 
-export const Container = styled('div')(({ theme }) => ({
+export const Container = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -26,7 +26,7 @@ export const Paper = styled(PaperMUI)(({ theme }) => ({
   }
 }))
 
-export const PaperStack = styled(StackMUI)(({ theme }) => ({
+export const PaperStack = styled(StackMUI)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -34,7 +34,7 @@ export const PaperStack = styled(StackMUI)(({ theme }) => ({
 
 }))
 
-export const StackInputs = styled(StackMUI)(({ theme }) => ({
+export const StackInputs = styled(StackMUI)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -43,7 +43,7 @@ export const StackInputs = styled(StackMUI)(({ theme }) => ({
   minWidth: 250
 }))
 
-export const StackButtons = styled(StackMUI)(({ theme }) => ({
+export const StackButtons = styled(StackMUI)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

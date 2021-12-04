@@ -3,9 +3,11 @@ import { useCallback, useEffect, useState } from 'react'
 import Header from '../../shared/components/Header'
 import MenuAsideLeft from '../../shared/components/MenuAsideLeft'
 import useUserData, { UserData } from '../../shared/hooks/authenticationUser/useUserData'
+import ButtonHeader from '../components/ButtonsHeader'
+import { useRequestAcceptRequestFriend } from '../hooks/useRequestAcceptRequestFriend'
 import { useRequestCancelRequestFriend } from '../hooks/useRequestCancelRequestFriend'
 
-import { Status, useRequestFriendStatus } from '../hooks/useRequestFriendStatus'
+import { FriendStatus, useRequestFriendStatus } from '../hooks/useRequestFriendStatus'
 import { useRequestRemoveFriendship } from '../hooks/useRequestRemoveFriendship'
 import { useRequestSendRequestFriend } from '../hooks/useRequestSendRequestFriend'
 import { User, useRequestUser } from '../hooks/useRequestUser'
@@ -19,8 +21,7 @@ import {
   PerfilImage,
   PerfilName,
   PerfilBio,
-  ProfileHeader,
-  ButtonHeader
+  ProfileHeader
 } from './styles'
 
 type Props = {
@@ -28,39 +29,64 @@ type Props = {
 }
 
 const ProfilePage = (props: Props) => {
+  // state: pessoa logada
   const [myUserAuth, setMyUserAuth] = useState<UserData | null>(null)
+
+  // state: pessoa atual da pagina
   const [userProfile, setUserProfile] = useState<User>()
-  const [friendStatus, setFriendStatus] = useState<Status>('Unknow')
+
+  // state: status da relação do usuario logado com o perfil atual da pagina
+  const [friendStatus, setFriendStatus] = useState<FriendStatus>({ status: 'Unknow' })
+
+  // state: flag dizendo se o perfil atual da pagina é a pessoa logada
   const [userProfileIsIam, setUserProfileIsIam] = useState(false)
 
+  // hook: pegar dados da pessoa logada
   const userData = useUserData()
 
+  // hook: pegar a pessoa atua da pagina
   const {
     isLoading: isLoadingRequestUser,
     handleRequestUser
   } = useRequestUser()
 
+  // hook: pegar o status da relação do usuario logado com o perfil atual da pagina
   const {
     isLoading: isLoadingRequestIsFriend,
     handleRequestFriendStatus
   } = useRequestFriendStatus()
 
+  // hook: manda uma solicitação de amizade
   const {
     isLoading: isLoadingRequestSendRequestFriend,
     handlSendRequestFriend
   } = useRequestSendRequestFriend()
 
+  // hook: cancela uma solicitação de amizade
   const {
     isLoading: isLoadingRequestCancelRequestFriend,
     handleRequestCancelRequestFriend
   } = useRequestCancelRequestFriend()
 
+  // hook: aceita uma solicitação de amizade
+  const {
+    isLoading: isLoadingAcceptRequestFriend,
+    handleRequestAcceptRequestFriend
+  } = useRequestAcceptRequestFriend()
+
+  // hook: remove uma amizade
   const {
     isLoading: isLoadingRequestRemoveFriendship,
     handleRequestRemoveFriendship
   } = useRequestRemoveFriendship()
 
-  const isLoading = isLoadingRequestUser || isLoadingRequestIsFriend || isLoadingRequestSendRequestFriend || isLoadingRequestCancelRequestFriend || isLoadingRequestRemoveFriendship
+  const isLoading =
+    isLoadingRequestUser ||
+    isLoadingRequestIsFriend ||
+    isLoadingRequestSendRequestFriend ||
+    isLoadingRequestCancelRequestFriend ||
+    isLoadingRequestRemoveFriendship ||
+    isLoadingAcceptRequestFriend
 
   useEffect(() => {
     /**
@@ -70,24 +96,31 @@ const ProfilePage = (props: Props) => {
      */
 
     (async () => {
+      // pega dados da pessoa authenticada
       const userAuth = userData.handleGetUserData()
       if (!userAuth) {
         return
       }
       setMyUserAuth(userAuth)
 
+      // verifica se ja veio o username da query url
       if (!props.username) {
         return
       }
+
+      // pega os dados da pessoa do perfil da pagina
       const userProfile = await handleRequestUser(userAuth.token as string, props.username)
       if (!userProfile) {
         return
       }
-      if (myUserAuth?.user.id === userProfile?.id) {
+
+      // verifica se a pessoa logada é dona do profile da pagina
+      if (userAuth.user.id === userProfile.id) {
         setUserProfileIsIam(true)
       }
       setUserProfile(userProfile)
 
+      // pega o status atual do usuário logado e o usuário da pagina
       const statusFriend = await handleRequestFriendStatus(
         userAuth.token as string,
         userAuth.user.id as number,
@@ -102,7 +135,13 @@ const ProfilePage = (props: Props) => {
         return
       }
       await handlSendRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
-      setFriendStatus('Waiting')
+
+      // update friend status
+      const statusFriend = await handleRequestFriendStatus(
+        myUserAuth.token as string,
+        myUserAuth.user.id as number,
+        userProfile.id as number)
+      setFriendStatus(statusFriend)
     })()
   }, [handlSendRequestFriend])
 
@@ -112,9 +151,31 @@ const ProfilePage = (props: Props) => {
         return
       }
       await handleRequestCancelRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
-      setFriendStatus('Unknow')
+
+      // update friend status
+      const statusFriend = await handleRequestFriendStatus(
+        myUserAuth.token as string,
+        myUserAuth.user.id as number,
+        userProfile.id as number)
+      setFriendStatus(statusFriend)
     })()
   }, [handleRequestCancelRequestFriend])
+
+  const handlerAcceptRequestFriend = useCallback(() => {
+    (async () => {
+      if (!myUserAuth || !userProfile) {
+        return
+      }
+      await handleRequestAcceptRequestFriend(myUserAuth.token, myUserAuth.user.id, userProfile.id)
+
+      // update friend status
+      const statusFriend = await handleRequestFriendStatus(
+        myUserAuth.token as string,
+        myUserAuth.user.id as number,
+        userProfile.id as number)
+      setFriendStatus(statusFriend)
+    })()
+  }, [handleRequestAcceptRequestFriend])
 
   const handlerRemoveFriendship = useCallback(() => {
     (async () => {
@@ -122,27 +183,15 @@ const ProfilePage = (props: Props) => {
         return
       }
       await handleRequestRemoveFriendship(myUserAuth.token, myUserAuth.user.id, userProfile.id)
-      setFriendStatus('Unknow')
-    })()
-  }, [handleRequestCancelRequestFriend])
 
-  const renderButtonHeader = () => {
-    /**
-     * Varia o botão que aparece dependendo de quem é o perfil
-     */
-    if (userProfileIsIam) {
-      return <ButtonHeader disabled={isLoading}>Editar profile</ButtonHeader>
-    }
-    if (friendStatus === 'Unknow') {
-      return <ButtonHeader disabled={isLoading} onClick={handlerSendRequestFriend}>Solicitar amizade</ButtonHeader>
-    }
-    if (friendStatus === 'Waiting') {
-      return <ButtonHeader disabled={isLoading} onClick={handlerCancelRequestFriend}>Cancelar solicitação</ButtonHeader>
-    }
-    if (friendStatus === 'Friend') {
-      return <ButtonHeader disabled={isLoading} onClick={handlerRemoveFriendship}>Cancelar amizade</ButtonHeader>
-    }
-  }
+      // update friend status
+      const statusFriend = await handleRequestFriendStatus(
+        myUserAuth.token as string,
+        myUserAuth.user.id as number,
+        userProfile.id as number)
+      setFriendStatus(statusFriend)
+    })()
+  }, [handleRequestRemoveFriendship])
 
   return (
     <Page>
@@ -151,7 +200,17 @@ const ProfilePage = (props: Props) => {
         <MenuAsideLeft />
         <Profile>
           <ProfileHeader>
-            {renderButtonHeader()}
+            <ButtonHeader
+              isLoadingPage={isLoading}
+              userProfileIsIam={userProfileIsIam}
+              userRequestSenderIsAm={friendStatus.requesterUserId === myUserAuth?.user.id}
+              friendStatus={friendStatus}
+              myUserAuth={myUserAuth}
+              handlerSendRequestFriend={handlerSendRequestFriend}
+              handlerCancelRequestFriend={handlerCancelRequestFriend}
+              handlerAcceptRequestFriend={handlerAcceptRequestFriend}
+              handlerRemoveFriendship={handlerRemoveFriendship}
+            />
           </ProfileHeader>
           <PerfilInfo>
             <PerfilImageBorder>

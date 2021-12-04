@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import useApi from '../../../shared/hooks/api/useApi'
 
 import useUserData from '../../../shared/hooks/authenticationUser/useUserData'
 import usePage from '../../../shared/hooks/pages/usePage'

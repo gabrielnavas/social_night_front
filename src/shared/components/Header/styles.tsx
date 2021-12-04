@@ -6,14 +6,15 @@ export const Container = styled(Box)(({ theme }) => ({
   width: '100%',
   position: 'sticky',
   top: 0,
-  left: 0
+  left: 0,
+  zIndex: theme.zIndex.drawer + 1
 }))
 
-export const ExitText = styled('span')(({ theme }) => ({
+export const ExitText = styled('span')(() => ({
   marginLeft: 10
 }))
 
-export const SocialNightText = styled('span')(({ theme }) => ({
+export const SocialNightText = styled('span')(() => ({
   marginLeft: 10
 }))
 

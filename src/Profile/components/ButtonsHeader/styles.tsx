@@ -75,3 +75,36 @@ export const ProfileHeader = styled(Paper)(() => ({
   padding: '20px 0',
   paddingLeft: 20
 }))
+
+export const ButtonEdit = styled(Button)(({ theme }) => ({
+  background: theme.palette.info.dark,
+  color: 'white',
+  padding: '10px 30px',
+  fontSize: '13px',
+  margin: '0 10px '
+}))
+
+export const ButtonSend = styled(Button)(({ theme }) => ({
+  background: theme.palette.info.dark,
+  color: 'white',
+  padding: '10px 30px',
+  fontSize: '13px',
+  margin: '0 10px '
+}))
+
+export const ButtonAccept = styled(Button)(({ theme }) => ({
+  background: theme.palette.success.dark,
+  color: 'white',
+  padding: '10px 30px',
+  fontSize: '13px',
+  margin: '0 10px '
+}))
+
+export const ButtonReject = styled(Button)(({ theme }) => ({
+  background: theme.palette.error.dark,
+  color: 'white',
+  padding: '10px 30px',
+  fontSize: '13px',
+  margin: '0 10px '
+
+}))

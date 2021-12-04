@@ -57,6 +57,7 @@ const RegisterPage = () => {
                 label="Nome de usuário"
                 variant="standard"
                 disabled={isLoading}
+                onKeyPress={e => e.key === 'Enter' && handleOnSubmit(e as any)}
               />
               <EmailInput
                 required
@@ -68,6 +69,7 @@ const RegisterPage = () => {
                 helperText={errors.email && errors.email }
                 variant="standard"
                 disabled={isLoading}
+                onKeyPress={e => e.key === 'Enter' && handleOnSubmit(e as any)}
               />
               <PasswordInput
                 required
@@ -80,6 +82,7 @@ const RegisterPage = () => {
                 helperText={errors.password && errors.password }
                 variant="standard"
                 disabled={isLoading}
+                onKeyPress={e => e.key === 'Enter' && handleOnSubmit(e as any)}
               />
               <PasswordConfirmationInput
                 required
@@ -92,6 +95,7 @@ const RegisterPage = () => {
                 onChange={handleChanges}
                 error={!!errors.passwordConfirmation}
                 helperText={errors.passwordConfirmation && errors.passwordConfirmation }
+                onKeyPress={e => e.key === 'Enter' && handleOnSubmit(e as any)}
               />
             </StackInputs>
             <StackButtons spacing={2}>

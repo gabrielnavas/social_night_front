@@ -10,14 +10,14 @@ export const Page = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark
 }))
 
-export const Container = styled(Stack)(({ theme }) => ({
+export const Container = styled(Stack)(() => ({
   display: 'flex',
   height: '100%',
   width: '90%',
   marginTop: 40
 }))
 
-export const Feed = styled('div')(({ theme }) => ({
+export const Feed = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
@@ -31,22 +31,22 @@ export const Post = styled(Paper)(({ theme }) => ({
   marginTop: 30
 }))
 
-export const Image = styled('img')(({ theme }) => ({
+export const Image = styled('img')(() => ({
   width: '100%'
 }))
 
-export const PostComment = styled('div')(({ theme }) => ({
+export const PostComment = styled('div')(() => ({
   padding: '20px 0 40px 0',
   margin: 20
 }))
 
-export const Footer = styled('div')(({ theme }) => ({
+export const Footer = styled('div')(() => ({
 }))
 
-export const Actions = styled(Stack)(({ theme }) => ({
+export const Actions = styled(Stack)(() => ({
   display: 'flex',
   justifyContent: 'space-around'
 }))
 
-export const ButtonAction = styled(Button)(({ theme }) => ({
+export const ButtonAction = styled(Button)(() => ({
 }))

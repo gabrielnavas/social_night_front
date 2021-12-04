@@ -1,7 +1,7 @@
-import { Button, Paper, TextField } from '@mui/material'
+import { Paper, TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-export const Container = styled(Paper)(({ theme }) => ({
+export const Container = styled(Paper)(() => ({
 
   display: 'flex',
   flexDirection: 'column',
@@ -17,7 +17,7 @@ export const Container = styled(Paper)(({ theme }) => ({
 
 }))
 
-export const ListUsersFounds = styled('div')(({ theme }) => ({
+export const ListUsersFounds = styled('div')(() => ({
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'flex-start',
@@ -41,12 +41,12 @@ export const UserItem = styled(Paper)(({ theme }) => ({
   }
 }))
 
-export const UserImage = styled('img')(({ theme }) => ({
+export const UserImage = styled('img')(() => ({
   width: '90px',
   height: '90px'
 }))
 
-export const UserName = styled('span')(({ theme }) => ({
+export const UserName = styled('span')(() => ({
   display: 'inline-block',
   whiteSpace: 'nowrap',
   overflow: 'hidden !important',
@@ -56,6 +56,6 @@ export const UserName = styled('span')(({ theme }) => ({
   width: '100%'
 }))
 
-export const TextFieldSearchUsers = styled(TextField)(({ theme }) => ({
+export const TextFieldSearchUsers = styled(TextField)(() => ({
   marginBottom: 40
 }))

@@ -9,6 +9,8 @@ const useApi = () => {
     getUrlGetUserByUsername: (username: string) => `${apiUrl}/users/username/${username}`,
     getUrlFriendStatus: (requesterUserId: number, targetUserId: number) => `${apiUrl}/friends/status/${requesterUserId}/${targetUserId}`,
     getUrlSendRequestFriend: () => `${apiUrl}/friends/send_request`,
+    getUrlAcceptRequestFriend: () => `${apiUrl}/friends/friendship/accept`,
+    getUrlGetAllRequestsFriend: (requesterUserId: number) => `${apiUrl}/friends/get_requesters/${requesterUserId}`,
     getUrlCancelSendRequestFriend: (requesterUserId: number, targetUserId: number) => `${apiUrl}/friends/cancel_request/${requesterUserId}/${targetUserId}`,
     getUrlRemoveFriendship: (requesterUserId: number, targetUserId: number) => `${apiUrl}/friends/friendship/cancel/${requesterUserId}/${targetUserId}`
   }

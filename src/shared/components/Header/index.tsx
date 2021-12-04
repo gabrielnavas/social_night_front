@@ -41,7 +41,7 @@ const Header = () => {
     <Container>
       <AppBar position="static">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }} >
-          <SocialNightTitle variant="h6" component="div">
+          <SocialNightTitle variant="h6">
             <StarIcon />
             <SocialNightText>
               Social Night

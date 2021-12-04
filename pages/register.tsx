@@ -4,10 +4,10 @@ import RegisterPage from '../src/Register/page'
 const Page = () => {
   return (
     <>
-    <Head>
-      <title>Registre-se</title>
-    </Head>
-    <RegisterPage />
+      <Head>
+        <title>Registre-se</title>
+      </Head>
+      <RegisterPage />
     </>
   )
 }

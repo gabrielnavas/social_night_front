@@ -4,7 +4,8 @@ const usePage = () => {
     getUrlRegisterPage: () => 'register',
     getUrlFeedPage: () => 'feed',
     getUrlSearchUser: () => '/search',
-    getUrlUserProfile: (username: string) => `/profile?username=${username}`
+    getUrlUserProfile: (username: string) => `/profile?username=${username}`,
+    getUrlRequestsFromFriend: () => '/requests_from_friend'
   }
 }
 

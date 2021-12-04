@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { Children } from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
 import theme from '../src/theme'
@@ -59,7 +59,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App: any) => (props) => <App emotionCache={cache} {...props} />
+      enhanceApp: (App: any) => (props: any) => <App emotionCache={cache} {...props} />
     })
 
   const initialProps = await Document.getInitialProps(ctx)
@@ -78,6 +78,6 @@ MyDocument.getInitialProps = async (ctx) => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags]
+    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags]
   }
 }
